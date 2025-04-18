@@ -1,11 +1,22 @@
 import { error, log } from 'console';
+import fs from 'fs/promises';
+import { fileURLToPath, URL } from 'url';
+import path from 'path';
 import {createServer } from 'http'
+import { url } from 'inspector';
 const PORT = process.env.PORT ;
 // const pass = process.env.pass;
 // console.log(pass);
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+console.log(__filename, __dirname);
+
+
 
 const server = createServer((req, res) => {
+    // check if GET request
     try {
         if (req.method === 'GET') {
             if (req.url === '/') {
