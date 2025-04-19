@@ -7,6 +7,12 @@ const logger = (req, res, next) =>{
     next();    
 }
 
+// json middleware  
+const  jsonMiddleware = (req,res,next) =>{
+    res.setHeader('content-type','application/json');
+    next();
+}
+
 const  users =[
     {
         id:1,
