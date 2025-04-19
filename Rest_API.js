@@ -34,6 +34,15 @@ const getUsersByIdHandler = (req,res) =>{
     res.end();   
 }
 
+// not found handler 
+
+const notFoundHandler = (req,res) =>{
+    res.statusCode = 404;
+    res.write(JSON.stringify({massage: 'Rout not found'}));
+    res.end();
+}
+
+
 const  users =[
     {
         id:1,
@@ -82,9 +91,7 @@ const server = createServer((req, res) =>{
        else
        {
            res.setHeader('content-type','application/json');
-           res.statusCode = 404;
-           res.write(JSON.stringify({massage: 'Rout not found'}));
-           res.end();
+
        }
     });
 
