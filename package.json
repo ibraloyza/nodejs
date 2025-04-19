@@ -5,11 +5,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": " nodemon --env-file=.env Rest_API.js"
   },
   "author": "ibra",
   "license": "MIT",
   "devDependencies": {
     "nodemon": "^3.1.9"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0"
   }
 }
