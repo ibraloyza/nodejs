@@ -14,9 +14,24 @@ const  jsonMiddleware = (req,res,next) =>{
 }
 
 // route handler  for GET /api/users
-const getUsersHandler = (req,res,next) =>{
+const getUsersHandler = (req,res) =>{
     res.write(JSON.stringify(users));
     res.end();
+}
+
+//route handler  for GET /api/users/id
+
+const getUsersByIdHandler = (req,res) =>{
+    const id = req.url.split('/')[3];
+    const user = users.find((user) => user.id === parseInt(id))
+
+    if (user) {
+        res.write(JSON.stringify(user));
+    }else{
+        res.statusCode = 404;
+        res.write(JSON.stringify({massage: 'user not found'}));
+    }
+    res.end();   
 }
 
 const  users =[
@@ -62,17 +77,7 @@ const server = createServer((req, res) =>{
        }
        else if (req.url.match(/\/api\/users\/([0-9]+)/) && req.method === 'GET' ) 
        {
-           const id = req.url.split('/')[3];
-           const user = users.find((user) => user.id === parseInt(id))
-           res.setHeader('content-type','application/json');
-   
-           if (user) {
-               res.write(JSON.stringify(user));
-           }else{
-               res.statusCode = 404;
-               res.write(JSON.stringify({massage: 'user not found'}));
-           }
-           res.end();              
+                
        }
        else
        {
