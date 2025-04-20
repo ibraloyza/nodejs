@@ -17,6 +17,7 @@ const  jsonMiddleware = (req,res,next) =>{
 const getUsersHandler = (req,res) =>{
     res.write(JSON.stringify(users));
     res.end();
+
 }
 
 //route handler  for GET /api/users/id
@@ -41,6 +42,36 @@ const notFoundHandler = (req,res) =>{
     res.write(JSON.stringify({massage: 'Rout not found'}));
     res.end();
 }
+
+// Route handler for POST /api/users
+const createUserHandler = (req, res) => {
+    let body = '';
+
+    // Listen for data chunks
+    req.on('data', (chunk) => {
+        body += chunk.toString();
+    });
+
+    // When all data is received
+    req.on('end', () => {
+        try {
+            const newUser = JSON.parse(body); // Parse incoming JSON
+
+            // Example: push to a user array (make sure 'users' is defined)
+            users.push(newUser);
+
+            res.statusCode = 201; // Created
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(newUser));
+        } catch (error) {
+            res.statusCode = 400; // Bad request
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ error: 'Invalid JSON input' }));
+        }
+    });
+};
+
+// console.log(createUserHandler);
 
 
 const  users =[
@@ -77,14 +108,25 @@ const  users =[
 // console.log(users);
 
 
-const server = createServer((req, res) =>{
-    logger(req, res,() =>{
-        jsonMiddleware(req,res,() =>{
-            if (req.url === '/api/users' && req.method === 'GET') {
+const server = createServer((req, res) =>
+{
+    logger(req, res,() =>
+    {
+        jsonMiddleware(req,res,() =>
+        {
+            if (req.url === '/api/users/' && req.method === 'GET') 
+            {
                 getUsersHandler(req,res);
-            }else if (req.url.match(/\/api\/users\/([0-9]+)/) && req.method === 'GET')  {
+            }
+            else if (req.url.match(/\/api\/users\/([0-9]+)/) && req.method === 'GET')  
+            {
                 getUsersByIdHandler(req,res);
-            }else{
+            } 
+            else if (req.url === '/api/users/' && req.method === 'POST') {
+                createUserHandler(req,res);
+            }
+            else
+            {
                 notFoundHandler(req,res)
             }
         }) 
