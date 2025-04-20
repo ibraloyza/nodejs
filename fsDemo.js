@@ -7,3 +7,7 @@ fs.readFile('./test.txt', 'utf8',(err,data) =>{
     console.log(data);  
 });
 
+// readFileSync() - syncronous ver
+
+const data = fs.readFileSync('./test.txt','utf8');
+console.log(data);
